@@ -1,0 +1,11 @@
+/.idea
+*.blend*
+*.log
+/cmake-*/
+/CMakeFiles/
+
+#Filter out source wav files, since we use Opus and OGG
+*.wav
+
+# Game soundtracks I cannot include due to licensing, sorry
+/data/sound/game_st*.opus
