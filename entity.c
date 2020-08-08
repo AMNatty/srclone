@@ -5,11 +5,6 @@
 #include "entity.h"
 #include "projectile.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#define PI 3.14159f
-
 struct Entity
 {
     entity_id id;

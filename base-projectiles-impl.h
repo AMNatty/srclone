@@ -5,6 +5,7 @@
 #ifndef SR_CLONE_BASE_PROJECTILES_IMPL_H
 #define SR_CLONE_BASE_PROJECTILES_IMPL_H
 
+#include "defs.h"
 #include "projectile.h"
 
 #define PROJECTILE_HIT_TICK_LIMIT 0.05f

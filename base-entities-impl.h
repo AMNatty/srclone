@@ -6,6 +6,7 @@
 #define SR_CLONE_BASE_ENTITIES_IMPL_H
 
 #include "entity.h"
+#include "defs.h"
 
 extern EntityTemplate_t et_box;
 

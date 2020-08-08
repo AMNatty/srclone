@@ -5,11 +5,9 @@
 #ifndef SR_CLONE_ENTITY_H
 #define SR_CLONE_ENTITY_H
 
-#include <limits.h>
-#include <stdbool.h>
-
 #include <SDL2/SDL_render.h>
 
+#include "defs.h"
 #include "player.h"
 #include "mtwister.h"
 #include "particle.h"

@@ -5,10 +5,9 @@
 #ifndef SR_CLONE_PROJECTILE_H
 #define SR_CLONE_PROJECTILE_H
 
+#include "defs.h"
 #include "player.h"
 #include "entity.h"
-
-#include <limits.h>
 
 typedef enum ProjectileType {
     PT_HEAT_STAR = 'A',

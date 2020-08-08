@@ -7,6 +7,8 @@
 
 #include <SDL2/SDL_render.h>
 
+#include "defs.h"
+
 typedef struct FontRenderer FontRenderer_t;
 
 FontRenderer_t *fr_init(SDL_Renderer *renderer);

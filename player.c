@@ -11,11 +11,6 @@
 #include "base-projectiles-impl.h"
 #include "sfx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#define PI 3.14159f
-
 struct Player
 {
     float x;
@@ -39,11 +34,11 @@ struct Player
     const ProjectileTemplate_t *ammo_templates[MAX_PROJECTILE_TYPES];
     ProjectileType_t active_ammo;
 
-    DirectionalTexture_t *ship;
-    SDL_Texture *flames;
-
     int engine_sound_channel;
 };
+
+DirectionalTexture_t *ship = NULL;
+SDL_Texture *flames = NULL;
 
 Player_t* player_create(SDL_Renderer *renderer)
 {
@@ -52,16 +47,6 @@ Player_t* player_create(SDL_Renderer *renderer)
     if (player == NULL)
     {
         fprintf(stderr, "Failed to allocate a player!");
-        exit(EXIT_FAILURE);
-    }
-
-    player->ship = dt_create(renderer, 16, "data/textures/ship");
-    const char tex[] = "data/textures/particles/rocketNozzle.png";
-    player->flames = IMG_LoadTexture(renderer, tex);
-
-    if (player->flames == NULL)
-    {
-        fprintf(stderr, "Failed to load the following texture: %s\n", tex);
         exit(EXIT_FAILURE);
     }
 
@@ -156,7 +141,7 @@ void player_tick(Player_t *player, ProjectileManager_t *projectileManager, float
     player->shoot_cooldown = fmaxf(player->shoot_cooldown, 0);
 
     if (fabsf(player->x_speed) > 0 || fabsf(player->y_speed) > 0)
-        player->direction = ((unsigned int) roundf((PI - atan2f(player->x_speed, -player->y_speed)) / (PI * 2) * (float) player->ship->directions)) % player->ship->directions;
+        player->direction = ((unsigned int) roundf((PI - atan2f(player->x_speed, -player->y_speed)) / (PI * 2) * (float) ship->directions)) % ship->directions;
 }
 
 void player_render(const Player_t *player, SDL_Renderer * renderer, float cam_x, float cam_y)
@@ -170,20 +155,20 @@ void player_render(const Player_t *player, SDL_Renderer * renderer, float cam_x,
     };
 
     SDL_FRect engineRect = rect;
-    float angle = 2 * PI * (float) player->direction / (float) player->ship->directions;
+    float angle = 2 * PI * (float) player->direction / (float) ship->directions;
     engineRect.x -= sinf(angle) * 15;
     engineRect.y -= cosf(angle) * 15;
     const SDL_FPoint center = { engineRect.w / 2, engineRect.h / 2 };
 
-    if (player->direction >= player->ship->directions / 4 * 3 || player->direction <= player->ship->directions / 4)
+    if (player->direction >= ship->directions / 4 * 3 || player->direction <= ship->directions / 4)
     {
-        SDL_RenderCopyExF(renderer, player->flames, NULL, &engineRect, -angle / 2 / PI * 360 + 135, &center, 0);
-        SDL_RenderCopyF(renderer, player->ship->textures[player->direction], NULL, &rect);
+        SDL_RenderCopyExF(renderer, flames, NULL, &engineRect, -angle / 2 / PI * 360 + 135, &center, 0);
+        SDL_RenderCopyF(renderer, ship->textures[player->direction], NULL, &rect);
     }
     else
     {
-        SDL_RenderCopyF(renderer, player->ship->textures[player->direction], NULL, &rect);
-        SDL_RenderCopyExF(renderer, player->flames, NULL, &engineRect, -angle / 2 / PI * 360 + 135, &center, 0);
+        SDL_RenderCopyF(renderer, ship->textures[player->direction], NULL, &rect);
+        SDL_RenderCopyExF(renderer, flames, NULL, &engineRect, -angle / 2 / PI * 360 + 135, &center, 0);
     }
 }
 
@@ -322,6 +307,12 @@ float player_get_health(const Player_t *player)
     return player->health;
 }
 
+float player_dist(const Player_t *player, float x, float y)
+{
+    float size = 10;
+    return hypotf(player->x - x, player->y - y) - size;
+}
+
 void player_free(Player_t *player)
 {
     if (player == NULL)
@@ -330,8 +321,24 @@ void player_free(Player_t *player)
     if (player->engine_sound_channel != 1)
         Mix_HaltChannel(player->engine_sound_channel);
 
-    dt_free(player->ship);
-    SDL_DestroyTexture(player->flames);
-
     free(player);
+}
+
+void plr_init(SDL_Renderer *renderer)
+{
+    ship = dt_create(renderer, 16, "data/textures/ship");
+    const char tex[] = "data/textures/particles/rocketNozzle.png";
+    flames = IMG_LoadTexture(renderer, tex);
+
+    if (flames == NULL)
+    {
+        fprintf(stderr, "Failed to load the following texture: %s\n", tex);
+        exit(EXIT_FAILURE);
+    }
+}
+
+void plr_free()
+{
+    dt_free(ship);
+    SDL_DestroyTexture(flames);
 }

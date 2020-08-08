@@ -11,7 +11,6 @@
 #include "projectile.h"
 #include "sfx.h"
 
-#define PI 3.14159f
 
 EntityTemplate_t et_box;
 

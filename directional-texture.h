@@ -7,6 +7,9 @@
 
 #include <SDL2/SDL.h>
 
+#include "defs.h"
+
+
 typedef struct DirectionalTexture {
     unsigned int directions;
     SDL_Texture *textures[1];

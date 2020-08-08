@@ -3,7 +3,6 @@
 //
 
 #include "input.h"
-#include <stdlib.h>
 
 GameInput_t GameInput = { 0 };
 

@@ -6,7 +6,8 @@
 #define SR_CLONE_INPUT_H
 
 #include <SDL2/SDL_events.h>
-#include <stdbool.h>
+
+#include "defs.h"
 
 typedef enum KeyEventType {
     KT_RELEASED,

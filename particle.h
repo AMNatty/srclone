@@ -7,6 +7,7 @@
 
 #include <SDL2/SDL_render.h>
 
+#include "defs.h"
 #include "directional-texture.h"
 #include "mtwister.h"
 #include "font-renderer.h"

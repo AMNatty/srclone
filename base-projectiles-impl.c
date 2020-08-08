@@ -7,8 +7,6 @@
 #include "base-projectiles-impl.h"
 #include "sfx.h"
 
-#define PI 3.14159f
-
 ProjectileTemplate_t pt_heat_star;
 ProjectileTemplate_t pt_laser_beam;
 ProjectileTemplate_t pt_electron_flare;
@@ -67,9 +65,9 @@ static void pt_shared_hitcheck(Player_t *player, EntityManager_t *entity_manager
     }
     else
     {
-        float player_dist = projectile_dist(projectile, player_get_x(player), player_get_y(player));
+        float player_distance = player_dist(player, px, py);
 
-        if (player_dist - 8 < projectile_size / 2)
+        if (player_distance < projectile_size / 2)
         {
             if (hit_sound_timer == 0)
             {

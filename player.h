@@ -5,9 +5,9 @@
 #ifndef SR_CLONE_PLAYER_H
 #define SR_CLONE_PLAYER_H
 
-#include <stdbool.h>
-
 #include <SDL2/SDL_render.h>
+
+#include "defs.h"
 #include "particle.h"
 
 typedef struct Player Player_t;
@@ -37,7 +37,10 @@ const struct ProjectileTemplate *player_get_selected_ammo(const Player_t *player
 void player_add_ammo(Player_t *player, const struct ProjectileTemplate * projectile_template, unsigned long count);
 unsigned long player_get_ammo_count(const Player_t *player, const struct ProjectileTemplate * projectile_template);
 void player_set_shoot_cooldown(Player_t *player, float cooldown);
+float player_dist(const Player_t *player, float x, float y);
 void player_free(Player_t *player);
 
+void plr_init(SDL_Renderer *renderer);
+void plr_free();
 
 #endif //SR_CLONE_PLAYER_H

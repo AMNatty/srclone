@@ -7,6 +7,8 @@
 
 #include <SDL2/SDL_render.h>
 
+#include "defs.h"
+
 #define STARS_IN_LEVEL 512
 
 typedef struct Star {

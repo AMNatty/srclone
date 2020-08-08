@@ -5,10 +5,6 @@
 #include <SDL2/SDL_render.h>
 
 #include "projectile.h"
-#include <stdio.h>
-#include <stdlib.h>
-
-#define PI 3.14159
 
 struct Projectile
 {

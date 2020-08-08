@@ -7,14 +7,11 @@
 #include <SDL2/SDL_image.h>
 #include <assert.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 DirectionalTexture_t * dt_create(SDL_Renderer *renderer, unsigned int directions, const char *location)
 {
     assert(directions < 64);
 
-    char *file = (char *) malloc(strlen(location) + strlen("/0000.png") + 1);
+    char *file = (char *) malloc((size_t) strlen(location) + (size_t) strlen("/0000.png") + 1);
 
     if (file == NULL)
     {

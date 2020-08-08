@@ -2,15 +2,8 @@
 // Created by michal on 06.08.20.
 //
 
-#include <stdbool.h>
-
 #include "particle.h"
 #include "entity.h"
-
-#include <stdio.h>
-#include <stdlib.h>
-
-#define PI 3.14159f
 
 struct ParticleInstance {
     bool active;

@@ -3,11 +3,9 @@
 //
 
 #include <SDL2/SDL_image.h>
+
 #include "font-renderer.h"
 #include "projectile.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 
 struct FontRenderer {
     SDL_Texture *sprite_font;

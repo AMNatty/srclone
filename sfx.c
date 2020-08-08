@@ -4,9 +4,6 @@
 
 #include "sfx.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-
 Mix_Music *mus_game_st0 = NULL;
 
 Mix_Chunk *sfx_player_engine = NULL;

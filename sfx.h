@@ -6,6 +6,8 @@
 #define SR_CLONE_SFX_H
 
 #include <SDL2/SDL_mixer.h>
+
+#include "defs.h"
 #include "mtwister.h"
 
 #define VOLUME_MUSIC 40

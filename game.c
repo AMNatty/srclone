@@ -2,8 +2,6 @@
 // Created by michal on 05.08.20.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <time.h>
 
 #include "game.h"
@@ -11,7 +9,6 @@
 #include "base-entities-impl.h"
 #include "particle.h"
 
-#define PI 3.14159f
 
 struct Game {
     ProjectileManager_t *projectile_manager;

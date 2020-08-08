@@ -5,6 +5,7 @@
 #ifndef SR_CLONE_GAME_H
 #define SR_CLONE_GAME_H
 
+#include "defs.h"
 #include "entity.h"
 #include "projectile.h"
 

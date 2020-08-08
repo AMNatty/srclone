@@ -1,21 +1,17 @@
 #include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
 #include <time.h>
 
 #include <SDL2/SDL.h>
 #undef main
 #include <SDL2/SDL_image.h>
 
+#include "defs.h"
 #include "input.h"
-#include "directional-texture.h"
 #include "stars.h"
 #include "player.h"
 #include "base-entities-impl.h"
 #include "base-projectiles-impl.h"
 #include "font-renderer.h"
-#include "mtwister.h"
 #include "game.h"
 #include "particle.h"
 #include "sfx.h"
@@ -71,6 +67,7 @@ int main()
     et_init(renderer);
     pt_init(renderer);
     part_init(renderer);
+    plr_init(renderer);
 
     st_gen_stars(0, 8192, 0, 8192);
 
@@ -273,6 +270,7 @@ int main()
 
     game_destroy(game);
 
+    plr_free();
     part_free();
     pt_free();
     et_free();
