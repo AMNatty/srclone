@@ -19,6 +19,8 @@ struct Player
     float x_speed;
     float y_speed;
 
+    float angle;
+
     unsigned int direction;
 
     float shoot_cooldown;
@@ -84,12 +86,18 @@ void player_tick(Player_t *player, ProjectileManager_t *projectileManager, float
         return;
     }
 
-    const float accel = 100 * time_delta * time_delta;
+    // Yes, I know there is no friction is space, but it makes the movement smoother
+    const float friction = powf(0.05f, time_delta);
+    const float max_speed = 150 * time_delta;
+    const float accel = 400 * time_delta * time_delta;
 
     if (GameInput.next_ammo)
         player_next_ammo(player);
     else if (GameInput.prev_ammo)
         player_prev_ammo(player);
+
+    player->x_speed *= friction;
+    player->y_speed *= friction;
 
     if (GameInput.up)
         player->y_speed += -accel;
@@ -99,6 +107,9 @@ void player_tick(Player_t *player, ProjectileManager_t *projectileManager, float
         player->x_speed += -accel;
     else if (GameInput.right)
         player->x_speed += accel;
+
+    player->x_speed = fmaxf(fminf(max_speed, player->x_speed), -max_speed);
+    player->y_speed = fmaxf(fminf(max_speed, player->y_speed), -max_speed);
 
     player->x += player->x_speed;
     player->y += player->y_speed;
@@ -126,7 +137,7 @@ void player_tick(Player_t *player, ProjectileManager_t *projectileManager, float
     {
         if (GameInput.shoot && player->shoot_cooldown <= 0 && player->ammo[active->type] > 0)
         {
-            float angle = -((float) player->direction / 16.0f) * (2 * PI) + PI / 2;
+            float angle = -((float) player->direction / (float) ship->directions) * (2 * PI) + PI / 2;
             projectile_create(projectileManager, player->x, player->y, angle, active);
             player->shoot_cooldown += active->cooldown;
 
@@ -326,7 +337,7 @@ void player_free(Player_t *player)
 
 void plr_init(SDL_Renderer *renderer)
 {
-    ship = dt_create(renderer, 16, "data/textures/ship");
+    ship = dt_create(renderer, 32, "data/textures/ship");
     const char tex[] = "data/textures/particles/rocketNozzle.png";
     flames = IMG_LoadTexture(renderer, tex);
 
