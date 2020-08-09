@@ -30,7 +30,7 @@ void sfx_init()
     const int channels = 2;
     const int chunk_size = 1024;
 
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, channels, chunk_size) == -1)
+    if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, channels, chunk_size) == -1)
     {
         fprintf(stderr, "Failed to open SDL2_mixer audio! Error: %s\n", Mix_GetError());
         exit(EXIT_FAILURE);
