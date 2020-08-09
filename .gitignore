@@ -4,6 +4,8 @@
 /build*/
 /cmake-*/
 /CMakeFiles/
+*.zip
+*.gz
 
 #Filter out source wav files, since we use Opus and OGG
 *.wav
