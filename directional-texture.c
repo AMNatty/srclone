@@ -21,6 +21,12 @@ DirectionalTexture_t * dt_create(SDL_Renderer *renderer, unsigned int directions
 
     DirectionalTexture_t *tex = (DirectionalTexture_t *) malloc(sizeof(DirectionalTexture_t) + sizeof(SDL_Texture*) * directions);
 
+    if (tex == NULL)
+    {
+        fprintf(stderr, "Memory allocation for a directional texture failed!");
+        exit(EXIT_FAILURE);
+    }
+
     for (unsigned int i = 0; i < directions; i++)
     {
         sprintf(file, "%s/%04u.png", location, i + 1);

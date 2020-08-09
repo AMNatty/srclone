@@ -95,7 +95,9 @@ int main()
     {
         clock_t now = clock();
         float timeDelta = (float) (now - lastFrame) / CLOCKS_PER_SEC;
-        lastFrame = now;
+
+        if (!SHOULD_SKIP_TICK(timeDelta))
+            lastFrame = now;
 
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -119,7 +121,7 @@ int main()
             player_render(player, renderer, cam_x, cam_y);
             dead_timer = 0;
         }
-        else
+        else if (!SHOULD_SKIP_TICK(timeDelta))
         {
             dead_timer += timeDelta;
 
@@ -197,7 +199,8 @@ int main()
 
         SDL_RenderPresent(renderer);
 
-        input_kb_reset();
+        if (!SHOULD_SKIP_TICK(timeDelta))
+            input_kb_reset();
 
         while (SDL_PollEvent(&event))
         {

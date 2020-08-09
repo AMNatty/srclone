@@ -107,7 +107,8 @@ static void en_tick_box(Player_t *player, EntityManager_t *manager, ProjectileMa
 static void en_render_box(SDL_Renderer * renderer, Entity_t *entity, float cam_x, float cam_y)
 {
     const unsigned int animation_steps_per_sec = 8;
-    unsigned int dir = (unsigned int) (animation_steps_per_sec * clock() / CLOCKS_PER_SEC) % et_box_texture->directions;
+    const unsigned int time = animation_steps_per_sec * SDL_GetTicks() / 1000;
+    unsigned int dir = time % et_box_texture->directions;
     const float size = 128;
     SDL_FRect rect = { en_get_x(entity) - cam_x - size / 2, en_get_y(entity) - cam_y - size / 2, size, size};
     SDL_RenderCopyF(renderer, et_box_texture->textures[dir], NULL, &rect);
@@ -156,7 +157,7 @@ static void en_generic_enemy_check_death(Player_t *player, EntityManager_t *mana
 
     if (en_get_health(entity) <= 0)
     {
-        double r = genRand(rand);
+        float r = (float) genRand(rand);
 
         if (r > 1 - enemy_data->box_drop_chance)
             en_create_entity(manager, x, y, &et_box);

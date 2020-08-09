@@ -146,6 +146,7 @@ bool en_destroy_entity(EntityManager_t *manager, entity_id id)
     free(entity);
 
     manager->entities[id] = NULL;
+    return true;
 }
 
 Entity_t *en_find_entity(EntityManager_t *manager, float x, float y, float search_range, EntityClass_t entity_type_filter, bool nearest)

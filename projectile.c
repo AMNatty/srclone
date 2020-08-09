@@ -68,7 +68,7 @@ void projectile_manager_render(ProjectileManager_t *projectile_manager, SDL_Rend
             };
 
             const SDL_FPoint center = { w / 2, h / 2 };
-            SDL_RenderCopyExF(renderer, sprite, NULL, &rect, (p->angle + PI / 4) / (2 * PI) * 360, &center, 0);
+            SDL_RenderCopyExF(renderer, sprite, NULL, &rect, ((double) p->angle + PI / 4) / (2 * (double) PI) * 360, &center, 0);
         }
     }
 }
@@ -201,7 +201,11 @@ float projectile_get_hit_sound_timer(const Projectile_t *projectile)
 
 bool projectile_destroy(ProjectileManager_t *projectile_manager, projectile_id id)
 {
+    bool was_used = projectile_manager->used_slots[id];
+
     projectile_manager->used_slots[id] = false;
     memset(&projectile_manager->projectiles[id], 0, sizeof(Projectile_t));
+
+    return was_used;
 }
 

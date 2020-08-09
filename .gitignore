@@ -1,6 +1,7 @@
 /.idea
 *.blend*
 *.log
+/build*/
 /cmake-*/
 /CMakeFiles/
 

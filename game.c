@@ -63,13 +63,21 @@ Player_t *game_get_player(Game_t *game)
     return game->player;
 }
 
-ParticleManager_t *game_get_particle_manager(Game_t *game)
+ParticleManager_t* game_get_particle_manager(Game_t* game)
 {
     return game->particle_manager;
 }
 
+MTRand* game_get_random(Game_t* game)
+{
+    return &game->rand;
+}
+
 void game_tick(Game_t *game, float delta_time, float visible_area_width, float visible_area_height)
 {
+    if (SHOULD_SKIP_TICK(delta_time))
+        return;
+
     if (!player_is_dead(game->player))
     {
         en_tick(game->entity_manager, game->projectile_manager, game->player, delta_time, &game->rand, game->particle_manager);

@@ -9,6 +9,8 @@
 #include "entity.h"
 #include "projectile.h"
 
+#define SHOULD_SKIP_TICK(tick_length) (!(tick_length > 0 && tick_length < 500))
+
 typedef struct Game Game_t;
 
 Game_t *game_create(SDL_Renderer *renderer);

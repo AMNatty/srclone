@@ -173,13 +173,13 @@ void player_render(const Player_t *player, SDL_Renderer * renderer, float cam_x,
 
     if (player->direction >= ship->directions / 4 * 3 || player->direction <= ship->directions / 4)
     {
-        SDL_RenderCopyExF(renderer, flames, NULL, &engineRect, -angle / 2 / PI * 360 + 135, &center, 0);
+        SDL_RenderCopyExF(renderer, flames, NULL, &engineRect, (double) -angle / 2 / (double) PI * 360 + 135, &center, 0);
         SDL_RenderCopyF(renderer, ship->textures[player->direction], NULL, &rect);
     }
     else
     {
         SDL_RenderCopyF(renderer, ship->textures[player->direction], NULL, &rect);
-        SDL_RenderCopyExF(renderer, flames, NULL, &engineRect, -angle / 2 / PI * 360 + 135, &center, 0);
+        SDL_RenderCopyExF(renderer, flames, NULL, &engineRect, (double) -angle / 2 / (double) PI * 360 + 135, &center, 0);
     }
 }
 
