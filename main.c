@@ -124,32 +124,32 @@ int main()
         else if (!SHOULD_SKIP_TICK(timeDelta))
         {
             dead_timer += timeDelta;
+        }
 
-            if (dead_timer > 1.0f)
+        if (dead_timer > 1.0f)
+        {
+            Mix_FadeOutMusic(500);
+
+            float w = 512;
+            float h = 256;
+            SDL_FRect ui_game_over_location = { (float) window_width / 2 - w / 2, (float) window_height / 2 - h / 2, w, (float) h };
+            SDL_RenderCopyF(renderer, ui_you_died, NULL, &ui_game_over_location);
+
+            if (GameInput.reset)
             {
-                Mix_FadeOutMusic(500);
+                dead_timer = 0;
 
-                float w = 512;
-                float h = 256;
-                SDL_FRect ui_game_over_location = { (float) window_width / 2 - w / 2, (float) window_height / 2 - h / 2, w, (float) h };
-                SDL_RenderCopyF(renderer, ui_you_died, NULL, &ui_game_over_location);
+                game_destroy(game);
+                game = game_create(renderer);
 
-                if (GameInput.reset)
+                player = game_get_player(game);
+                projectile_manager = game_get_projectile_manager(game);
+                entity_manager = game_get_entity_manager(game);
+                particle_manager = game_get_particle_manager(game);
+
+                if (Mix_FadeInMusic(mus_game_st0, -1, 500) == -1)
                 {
-                    dead_timer = 0;
-
-                    game_destroy(game);
-                    game = game_create(renderer);
-
-                    player = game_get_player(game);
-                    projectile_manager = game_get_projectile_manager(game);
-                    entity_manager = game_get_entity_manager(game);
-                    particle_manager = game_get_particle_manager(game);
-
-                    if(Mix_FadeInMusic(mus_game_st0, -1, 500) == -1)
-                    {
-                        fprintf(stderr, "Failed to play music: %s\n", Mix_GetError());
-                    }
+                    fprintf(stderr, "Failed to play music: %s\n", Mix_GetError());
                 }
             }
         }
