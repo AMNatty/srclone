@@ -84,7 +84,7 @@ void en_free_manager(EntityManager_t *manager)
     free(manager);
 }
 
-Entity_t *en_create_entity(EntityManager_t *manager, float x, float y, const EntityTemplate_t *template)
+Entity_t *en_create_entity(EntityManager_t *manager, float x, float y, const EntityTemplate_t *prototype)
 {
     /**
      * This isn't particularly efficient, but whatever.
@@ -106,14 +106,14 @@ Entity_t *en_create_entity(EntityManager_t *manager, float x, float y, const Ent
             e->id = i;
             e->x = x;
             e->y = y;
-            e->renderer = template->renderer;
-            e->tick = template->tick_func;
-            e->max_health = template->max_health;
-            e->size = template->size;
+            e->renderer = prototype->renderer;
+            e->tick = prototype->tick_func;
+            e->max_health = prototype->max_health;
+            e->size = prototype->size;
             e->health = e->max_health;
             e->rotation = 0;
-            e->entity_class = template->entity_class;
-            e->data = calloc(1, template->entity_data_size);
+            e->entity_class = prototype->entity_class;
+            e->data = calloc(1, prototype->entity_data_size);
 
             if (e->data == NULL)
             {
@@ -122,8 +122,8 @@ Entity_t *en_create_entity(EntityManager_t *manager, float x, float y, const Ent
                 return NULL;
             }
 
-            if (template->initializer != NULL)
-                template->initializer(e);
+            if (prototype->initializer != NULL)
+                prototype->initializer(e);
 
             manager->entities[i] = e;
 

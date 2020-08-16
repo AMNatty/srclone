@@ -34,7 +34,7 @@ int main()
     int window_height = 720;
 
     SDL_Window *window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, 0);
-    SDL_SetWindowResizable(window, true);
+    SDL_SetWindowResizable(window, SDL_TRUE);
     SDL_ShowWindow(window);
 
     if (window == NULL)
