@@ -6,8 +6,8 @@ include(CheckLibraryExists)
 check_library_exists(m powf "" LINK_LIBM)
 
 if (LINK_LIBM)
-    set (LIBM ${LIBM} m)
-endif(LINK_LIBM)
+    set(LIBM ${LIBM} m)
+endif (LINK_LIBM)
 
 set(CMAKE_C_STANDARD 99)
 

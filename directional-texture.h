@@ -1,5 +1,5 @@
 //
-// Created by michal on 02.08.20.
+// Created by Natty on 02.08.20.
 //
 
 #ifndef SR_CLONE_DIRECTIONAL_TEXTURE_H
@@ -12,10 +12,10 @@
 
 typedef struct DirectionalTexture {
     unsigned int directions;
-    SDL_Texture *textures[1];
+    SDL_Texture* textures[1];
 } DirectionalTexture_t;
 
-DirectionalTexture_t* dt_create(SDL_Renderer *renderer, unsigned int directions, const char *location);
+DirectionalTexture_t* dt_create(SDL_Renderer* renderer, unsigned int directions, const char* location);
 void dt_free(DirectionalTexture_t* texture);
 
-#endif //SR_CLONE_DIRECTIONAL_TEXTURE_H
+#endif//SR_CLONE_DIRECTIONAL_TEXTURE_H

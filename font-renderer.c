@@ -1,5 +1,5 @@
 //
-// Created by michal on 04.08.20.
+// Created by Natty on 04.08.20.
 //
 
 #include <SDL2/SDL_image.h>
@@ -8,15 +8,13 @@
 #include "projectile.h"
 
 struct FontRenderer {
-    SDL_Texture *sprite_font;
+    SDL_Texture* sprite_font;
 };
 
-FontRenderer_t *fr_init(SDL_Renderer *renderer)
-{
-    FontRenderer_t *font_renderer = (FontRenderer_t *) malloc(sizeof(FontRenderer_t));
+FontRenderer_t* fr_init(SDL_Renderer* renderer) {
+    FontRenderer_t* font_renderer = (FontRenderer_t*) malloc(sizeof(FontRenderer_t));
 
-    if (font_renderer == NULL)
-    {
+    if (font_renderer == NULL) {
         fprintf(stderr, "Failed to allocate a font renderer!");
         exit(EXIT_FAILURE);
     }
@@ -24,8 +22,7 @@ FontRenderer_t *fr_init(SDL_Renderer *renderer)
     const char font_sprite_sheet[] = "data/textures/font.png";
     font_renderer->sprite_font = IMG_LoadTexture(renderer, font_sprite_sheet);
 
-    if (font_renderer->sprite_font == NULL)
-    {
+    if (font_renderer->sprite_font == NULL) {
         fprintf(stderr, "Failed to load the following texture: %s\n", font_sprite_sheet);
         exit(EXIT_FAILURE);
     }
@@ -33,28 +30,23 @@ FontRenderer_t *fr_init(SDL_Renderer *renderer)
     return font_renderer;
 }
 
-void fr_draw(SDL_Renderer *renderer, FontRenderer_t *font_renderer, float x, float y, float size, const char *text)
-{
+void fr_draw(SDL_Renderer* renderer, FontRenderer_t* font_renderer, float x, float y, float size, const char* text) {
     const int c_size = 8;
 
     SDL_Rect src_rect = {
             .w = c_size,
-            .h = c_size
-    };
+            .h = c_size};
 
     SDL_FRect dst_rect = {
             x,
             y,
             size,
-            size
-    };
+            size};
 
-    for (; *text != '\0'; text++)
-    {
+    for (; *text != '\0'; text++) {
         char c = *text;
 
-        switch (c)
-        {
+        switch (c) {
             case '0':
             case '1':
             case '2':
@@ -147,8 +139,7 @@ void fr_draw(SDL_Renderer *renderer, FontRenderer_t *font_renderer, float x, flo
     }
 }
 
-void fr_free(FontRenderer_t *renderer)
-{
+void fr_free(FontRenderer_t* renderer) {
     if (renderer == NULL)
         return;
 

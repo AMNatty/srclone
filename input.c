@@ -1,15 +1,13 @@
 //
-// Created by michal on 02.08.20.
+// Created by Natty on 02.08.20.
 //
 
 #include "input.h"
 
-GameInput_t GameInput = { 0 };
+GameInput_t GameInput = {0};
 
-void input_kb_event(SDL_Scancode scancode, KeyEventType_t event)
-{
-    switch (scancode)
-    {
+void input_kb_event(SDL_Scancode scancode, KeyEventType_t event) {
+    switch (scancode) {
         case SDL_SCANCODE_W:
         case SDL_SCANCODE_UP:
             GameInput.up = event == KT_PRESSED;
@@ -46,14 +44,12 @@ void input_kb_event(SDL_Scancode scancode, KeyEventType_t event)
     }
 }
 
-void input_kb_reset()
-{
+void input_kb_reset() {
     GameInput.next_ammo = false;
     GameInput.prev_ammo = false;
     GameInput.reset = false;
 }
 
-void input_kb_clear()
-{
+void input_kb_clear() {
     memset(&GameInput, 0, sizeof(GameInput));
 }

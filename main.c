@@ -5,25 +5,23 @@
 #undef main
 #include <SDL2/SDL_image.h>
 
-#include "defs.h"
-#include "input.h"
-#include "stars.h"
-#include "player.h"
 #include "base-entities-impl.h"
 #include "base-projectiles-impl.h"
+#include "defs.h"
 #include "font-renderer.h"
 #include "game.h"
+#include "input.h"
 #include "particle.h"
+#include "player.h"
 #include "sfx.h"
+#include "stars.h"
 
-int main()
-{
+int main() {
     const char title[] = "SR Clone";
 
     printf("Initializing SDL2.\n");
 
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0)
-    {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
         fprintf(stderr, "Failed to initialize SDL2! Error: %s", SDL_GetError());
         return EXIT_FAILURE;
     }
@@ -33,36 +31,33 @@ int main()
     int window_width = 1280;
     int window_height = 720;
 
-    SDL_Window *window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, 0);
+    SDL_Window* window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, window_width, window_height, 0);
     SDL_SetWindowResizable(window, SDL_TRUE);
     SDL_ShowWindow(window);
 
-    if (window == NULL)
-    {
+    if (window == NULL) {
         fprintf(stderr, "Failed to create the window! Error: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
 
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
-    if (renderer == NULL)
-    {
+    if (renderer == NULL) {
         fprintf(stderr, "Failed to create a renderer! Error: %s\n", SDL_GetError());
         return EXIT_FAILURE;
     }
 
     sfx_init();
 
-    SDL_Texture *ui_you_died = IMG_LoadTexture(renderer, "data/textures/ui/youDied.png");
+    SDL_Texture* ui_you_died = IMG_LoadTexture(renderer, "data/textures/ui/youDied.png");
 
-    if (ui_you_died == NULL)
-    {
+    if (ui_you_died == NULL) {
         fprintf(stderr, "Failed to load a UI sprite: data/textures/ui/youDied.png\n");
         return EXIT_FAILURE;
     }
 
     st_load_star_textures(renderer);
-    FontRenderer_t *font_renderer = fr_init(renderer);
+    FontRenderer_t* font_renderer = fr_init(renderer);
 
     et_init(renderer);
     pt_init(renderer);
@@ -71,12 +66,12 @@ int main()
 
     st_gen_stars(0, 8192, 0, 8192);
 
-    Game_t *game = game_create(renderer);
+    Game_t* game = game_create(renderer);
 
-    Player_t *player = game_get_player(game);
-    ProjectileManager_t *projectile_manager = game_get_projectile_manager(game);
-    EntityManager_t *entity_manager = game_get_entity_manager(game);
-    ParticleManager_t *particle_manager = game_get_particle_manager(game);
+    Player_t* player = game_get_player(game);
+    ProjectileManager_t* projectile_manager = game_get_projectile_manager(game);
+    EntityManager_t* entity_manager = game_get_entity_manager(game);
+    ParticleManager_t* particle_manager = game_get_particle_manager(game);
 
     SDL_Event event;
     bool shouldQuit = false;
@@ -86,13 +81,11 @@ int main()
     float hit_overlay = 0;
     float dead_timer = 0;
 
-    if(Mix_PlayMusic(mus_game_st0, -1) == -1)
-    {
+    if (Mix_PlayMusic(mus_game_st0, -1) == -1) {
         fprintf(stderr, "Failed to play music: %s\n", Mix_GetError());
     }
 
-    while (!shouldQuit)
-    {
+    while (!shouldQuit) {
         clock_t now = clock();
         float timeDelta = (float) (now - lastFrame) / CLOCKS_PER_SEC;
 
@@ -116,27 +109,22 @@ int main()
         projectile_manager_render(projectile_manager, renderer, cam_x, cam_y);
         particle_manager_render(particle_manager, renderer, font_renderer, cam_x, cam_y);
 
-        if (!player_is_dead(player))
-        {
+        if (!player_is_dead(player)) {
             player_render(player, renderer, cam_x, cam_y);
             dead_timer = 0;
-        }
-        else if (!SHOULD_SKIP_TICK(timeDelta))
-        {
+        } else if (!SHOULD_SKIP_TICK(timeDelta)) {
             dead_timer += timeDelta;
         }
 
-        if (dead_timer > 1.0f)
-        {
+        if (dead_timer > 1.0f) {
             Mix_FadeOutMusic(500);
 
             float w = 512;
             float h = 256;
-            SDL_FRect ui_game_over_location = { (float) window_width / 2 - w / 2, (float) window_height / 2 - h / 2, w, (float) h };
+            SDL_FRect ui_game_over_location = {(float) window_width / 2 - w / 2, (float) window_height / 2 - h / 2, w, (float) h};
             SDL_RenderCopyF(renderer, ui_you_died, NULL, &ui_game_over_location);
 
-            if (GameInput.reset)
-            {
+            if (GameInput.reset) {
                 dead_timer = 0;
 
                 game_destroy(game);
@@ -147,8 +135,7 @@ int main()
                 entity_manager = game_get_entity_manager(game);
                 particle_manager = game_get_particle_manager(game);
 
-                if (Mix_FadeInMusic(mus_game_st0, -1, 500) == -1)
-                {
+                if (Mix_FadeInMusic(mus_game_st0, -1, 500) == -1) {
                     fprintf(stderr, "Failed to play music: %s\n", Mix_GetError());
                 }
             }
@@ -161,12 +148,11 @@ int main()
             hit_overlay = 0.1f;
         last_health = player_hp;
 
-        if (hit_overlay > 0)
-        {
+        if (hit_overlay > 0) {
             const float cover = 0.025f;
             float w = cover * (float) window_width;
             float h = cover * (float) window_height;
-            SDL_FRect hp_penalty_shadow = {0, 0, (float) window_width, (float) h };
+            SDL_FRect hp_penalty_shadow = {0, 0, (float) window_width, (float) h};
             SDL_SetRenderDrawColor(renderer, 128, 0, 0, 255);
             SDL_RenderFillRectF(renderer, &hp_penalty_shadow);
             hp_penalty_shadow.y = (float) window_height - h;
@@ -184,7 +170,7 @@ int main()
         sprintf(buf, "S %010ld", player_get_score(player));
         fr_draw(renderer, font_renderer, 5, 5, 24, buf);
 
-        const ProjectileTemplate_t *ammo = player_get_selected_ammo(player);
+        const ProjectileTemplate_t* ammo = player_get_selected_ammo(player);
         unsigned long ammo_count = player_get_ammo_count(player, ammo);
         if (ammo_count == PROJECTILE_INFINITY)
             sprintf(buf, "%c x&", ammo->type);
@@ -202,34 +188,29 @@ int main()
         if (!SHOULD_SKIP_TICK(timeDelta))
             input_kb_reset();
 
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
                 case SDL_KEYDOWN:
                 {
-                    SDL_KeyboardEvent *kbEvent = &event.key;
+                    SDL_KeyboardEvent* kbEvent = &event.key;
 
                     if (kbEvent->repeat)
                         break;
 
                     input_kb_event(kbEvent->keysym.scancode, KT_PRESSED);
-                }
-                    break;
+                } break;
 
                 case SDL_KEYUP:
                 {
-                    SDL_KeyboardEvent *kbEvent = &event.key;
+                    SDL_KeyboardEvent* kbEvent = &event.key;
                     input_kb_event(kbEvent->keysym.scancode, KT_RELEASED);
-                }
-                    break;
+                } break;
 
                 case SDL_WINDOWEVENT:
                 {
-                    SDL_WindowEvent *windowEvent = &event.window;
+                    SDL_WindowEvent* windowEvent = &event.window;
 
-                    switch (windowEvent->event)
-                    {
+                    switch (windowEvent->event) {
                         case SDL_WINDOWEVENT_FOCUS_GAINED:
                             Mix_VolumeMusic(VOLUME_MUSIC);
                             Mix_Volume(-1, VOLUME_SFX);
@@ -254,10 +235,8 @@ int main()
 
                         default:
                             break;
-
                     }
-                }
-                    break;
+                } break;
 
                 case SDL_QUIT:
                     shouldQuit = true;

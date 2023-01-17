@@ -1,5 +1,5 @@
 //
-// Created by michal on 06.08.20.
+// Created by Natty on 06.08.20.
 //
 
 #include "particle.h"
@@ -21,23 +21,21 @@ struct ParticleInstance {
     unsigned int animation_frame;
     float animation_timer;
 
-    const Particle_t *prototype;
+    const Particle_t* prototype;
 
     char data[PARTICLE_DATA];
 };
 
 struct ParticleManager {
     ParticleInstance_t particles[MAX_PARTICLES];
-    MTRand *random;
+    MTRand* random;
 };
 
 
-ParticleManager_t *particle_manager_create(MTRand *mt_rand)
-{
-    ParticleManager_t *manager = (ParticleManager_t *) calloc(1, sizeof(ParticleManager_t));
+ParticleManager_t* particle_manager_create(MTRand* mt_rand) {
+    ParticleManager_t* manager = (ParticleManager_t*) calloc(1, sizeof(ParticleManager_t));
 
-    if (manager == NULL)
-    {
+    if (manager == NULL) {
         fprintf(stderr, "Failed to allocate memory for a particle manager!\n");
         exit(EXIT_FAILURE);
     }
@@ -47,35 +45,28 @@ ParticleManager_t *particle_manager_create(MTRand *mt_rand)
     return manager;
 }
 
-void particle_manager_free(ParticleManager_t *particle_manager)
-{
+void particle_manager_free(ParticleManager_t* particle_manager) {
     free(particle_manager);
 }
 
-void particle_manager_tick(ParticleManager_t *particle_manager, float delta_time)
-{
+void particle_manager_tick(ParticleManager_t* particle_manager, float delta_time) {
 
-    for (particle_id i = 0; i < MAX_PARTICLES; i++)
-    {
-        ParticleInstance_t *instance = &particle_manager->particles[i];
+    for (particle_id i = 0; i < MAX_PARTICLES; i++) {
+        ParticleInstance_t* instance = &particle_manager->particles[i];
 
-        if (instance->active)
-        {
+        if (instance->active) {
             instance->prototype->tick_func(particle_manager, instance, delta_time);
         }
     }
 }
 
-void particle_manager_render(ParticleManager_t *particle_manager, SDL_Renderer *renderer, FontRenderer_t *font_renderer, float cam_x, float cam_y)
-{
+void particle_manager_render(ParticleManager_t* particle_manager, SDL_Renderer* renderer, FontRenderer_t* font_renderer, float cam_x, float cam_y) {
     int j = 0;
 
-    for (particle_id i = 0; i < MAX_PARTICLES; i++)
-    {
-        ParticleInstance_t *instance = &particle_manager->particles[i];
+    for (particle_id i = 0; i < MAX_PARTICLES; i++) {
+        ParticleInstance_t* instance = &particle_manager->particles[i];
 
-        if (instance->active)
-        {
+        if (instance->active) {
             j++;
             instance->prototype->render_func(renderer, instance, font_renderer, cam_x, cam_y);
         }
@@ -83,14 +74,11 @@ void particle_manager_render(ParticleManager_t *particle_manager, SDL_Renderer *
 }
 
 
-ParticleInstance_t *particle_create(ParticleManager_t *particle_manager, const Particle_t *particle, float x, float y, float rotation, const char data[PARTICLE_DATA])
-{
-    for (particle_id i = 0; i < MAX_PARTICLES; i++)
-    {
-        ParticleInstance_t *instance = &particle_manager->particles[i];
+ParticleInstance_t* particle_create(ParticleManager_t* particle_manager, const Particle_t* particle, float x, float y, float rotation, const char data[PARTICLE_DATA]) {
+    for (particle_id i = 0; i < MAX_PARTICLES; i++) {
+        ParticleInstance_t* instance = &particle_manager->particles[i];
 
-        if (!instance->active)
-        {
+        if (!instance->active) {
             instance->id = i;
             instance->prototype = particle;
             instance->x = x;
@@ -115,37 +103,29 @@ ParticleInstance_t *particle_create(ParticleManager_t *particle_manager, const P
     return NULL;
 }
 
-void particle_destroy(ParticleManager_t *particle_manager, particle_id particle)
-{
+void particle_destroy(ParticleManager_t* particle_manager, particle_id particle) {
     memset(&particle_manager->particles[particle], 0, sizeof(ParticleInstance_t));
 }
 
-static void particle_standard_tick_func(ParticleManager_t *manager, ParticleInstance_t *instance, float delta_time)
-{
+static void particle_standard_tick_func(ParticleManager_t* manager, ParticleInstance_t* instance, float delta_time) {
     instance->rotation += instance->rotational_velocity * delta_time;
     instance->lifetime -= delta_time;
 
-    if (instance->lifetime <= 0)
-    {
+    if (instance->lifetime <= 0) {
         particle_destroy(manager, instance->id);
         return;
     }
 
-    if (instance->prototype->animation_bound_to_lifetime)
-    {
+    if (instance->prototype->animation_bound_to_lifetime) {
         const float particle_progress = 1 - instance->lifetime / instance->initial_lifetime;
 
-        if (particle_progress >= 0 && particle_progress <= 1)
-        {
+        if (particle_progress >= 0 && particle_progress <= 1) {
             instance->animation_frame = (unsigned int) ((float) (instance->prototype->sprites->directions - 1) * particle_progress);
         }
-    }
-    else
-    {
+    } else {
         instance->animation_timer -= delta_time;
 
-        if (instance->animation_timer <= 0)
-        {
+        if (instance->animation_timer <= 0) {
             instance->animation_frame++;
 
             if (instance->prototype->sprites != NULL)
@@ -156,8 +136,7 @@ static void particle_standard_tick_func(ParticleManager_t *manager, ParticleInst
     }
 }
 
-static void particle_standard_render_func(SDL_Renderer *renderer, ParticleInstance_t *instance, FontRenderer_t *font_renderer, float cam_x, float cam_y)
-{
+static void particle_standard_render_func(SDL_Renderer* renderer, ParticleInstance_t* instance, FontRenderer_t* font_renderer, float cam_x, float cam_y) {
     const float particle_progress = 1 - instance->lifetime / instance->initial_lifetime;
     const float scale = instance->prototype->initial_scale * (1 - particle_progress) + instance->prototype->final_scale * particle_progress;
 
@@ -167,12 +146,11 @@ static void particle_standard_render_func(SDL_Renderer *renderer, ParticleInstan
     rect.x = instance->x - cam_x - rect.w / 2.0f;
     rect.y = instance->y - cam_y - rect.h / 2.0f;
 
-    SDL_Texture *sprite = instance->prototype->sprites->textures[instance->animation_frame];
+    SDL_Texture* sprite = instance->prototype->sprites->textures[instance->animation_frame];
     SDL_RenderCopyExF(renderer, sprite, NULL, &rect, instance->rotation * 360.0f / (2 * PI), NULL, 0);
 }
 
-static void particle_floating_text_render(SDL_Renderer *renderer, ParticleInstance_t *instance, FontRenderer_t *font_renderer, float cam_x, float cam_y)
-{
+static void particle_floating_text_render(SDL_Renderer* renderer, ParticleInstance_t* instance, FontRenderer_t* font_renderer, float cam_x, float cam_y) {
     const float particle_progress = 1 - instance->lifetime / instance->initial_lifetime;
     const float scale = instance->prototype->initial_scale * (1 - particle_progress) + instance->prototype->final_scale * particle_progress;
     const struct ParticleDataFloatingText* data = (struct ParticleDataFloatingText*) instance->data;
@@ -183,8 +161,7 @@ Particle_t par_explosion1;
 Particle_t par_hit;
 Particle_t par_floating_text;
 
-void part_init(SDL_Renderer * renderer)
-{
+void part_init(SDL_Renderer* renderer) {
     par_explosion1.initial_scale = 1;
     par_explosion1.final_scale = 1.1f;
     par_explosion1.render_func = particle_standard_render_func;
@@ -214,7 +191,5 @@ void part_init(SDL_Renderer * renderer)
     par_floating_text.mean_lifetime = 2.0f;
 }
 
-void part_free()
-{
-
+void part_free() {
 }

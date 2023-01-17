@@ -1,20 +1,20 @@
 //
-// Created by michal on 05.08.20.
+// Created by Natty on 05.08.20.
 //
 
 #include <time.h>
 
-#include "game.h"
-#include "projectile.h"
 #include "base-entities-impl.h"
+#include "game.h"
 #include "particle.h"
+#include "projectile.h"
 
 
 struct Game {
-    ProjectileManager_t *projectile_manager;
-    EntityManager_t *entity_manager;
-    ParticleManager_t * particle_manager;
-    Player_t *player;
+    ProjectileManager_t* projectile_manager;
+    EntityManager_t* entity_manager;
+    ParticleManager_t* particle_manager;
+    Player_t* player;
     MTRand rand;
 
     float spawn_timer;
@@ -22,12 +22,10 @@ struct Game {
     float difficulty;
 };
 
-Game_t *game_create(SDL_Renderer *renderer)
-{
-    Game_t *game = (Game_t *) calloc(1, sizeof(Game_t));
+Game_t* game_create(SDL_Renderer* renderer) {
+    Game_t* game = (Game_t*) calloc(1, sizeof(Game_t));
 
-    if (game == NULL)
-    {
+    if (game == NULL) {
         fprintf(stderr, "Failed to allocate memory for the game struct.");
         exit(EXIT_FAILURE);
     }
@@ -38,7 +36,7 @@ Game_t *game_create(SDL_Renderer *renderer)
     game->rand = seedRand(time(NULL));
     game->particle_manager = particle_manager_create(&game->rand);
 
-    Player_t *player = player_create(renderer);
+    Player_t* player = player_create(renderer);
     player_set_x(player, 640);
     player_set_y(player, 360);
     game->player = player;
@@ -48,38 +46,31 @@ Game_t *game_create(SDL_Renderer *renderer)
     return game;
 }
 
-ProjectileManager_t *game_get_projectile_manager(Game_t *game)
-{
+ProjectileManager_t* game_get_projectile_manager(Game_t* game) {
     return game->projectile_manager;
 }
 
-EntityManager_t *game_get_entity_manager(Game_t *game)
-{
+EntityManager_t* game_get_entity_manager(Game_t* game) {
     return game->entity_manager;
 }
 
-Player_t *game_get_player(Game_t *game)
-{
+Player_t* game_get_player(Game_t* game) {
     return game->player;
 }
 
-ParticleManager_t* game_get_particle_manager(Game_t* game)
-{
+ParticleManager_t* game_get_particle_manager(Game_t* game) {
     return game->particle_manager;
 }
 
-MTRand* game_get_random(Game_t* game)
-{
+MTRand* game_get_random(Game_t* game) {
     return &game->rand;
 }
 
-void game_tick(Game_t *game, float delta_time, float visible_area_width, float visible_area_height)
-{
+void game_tick(Game_t* game, float delta_time, float visible_area_width, float visible_area_height) {
     if (SHOULD_SKIP_TICK(delta_time))
         return;
 
-    if (!player_is_dead(game->player))
-    {
+    if (!player_is_dead(game->player)) {
         en_tick(game->entity_manager, game->projectile_manager, game->player, delta_time, &game->rand, game->particle_manager);
         projectile_manager_tick(game->projectile_manager, game->player, game->entity_manager, delta_time, game->particle_manager);
         player_tick(game->player, game->projectile_manager, delta_time, game->particle_manager, &game->rand);
@@ -88,15 +79,13 @@ void game_tick(Game_t *game, float delta_time, float visible_area_width, float v
     particle_manager_tick(game->particle_manager, delta_time);
 
 
-    if (!player_is_dead(game->player))
-    {
+    if (!player_is_dead(game->player)) {
         game->run_time += delta_time;
         game->difficulty = 1 + powf(game->run_time, 1.5f);
 
         game->spawn_timer -= delta_time;
 
-        if (game->spawn_timer <= 0)
-        {
+        if (game->spawn_timer <= 0) {
             const float min_spawn_radius = 200 + hypotf(visible_area_height, visible_area_width);
             const float spawn_timer = 160 / (4 + log10f(game->difficulty));
 
@@ -113,16 +102,13 @@ void game_tick(Game_t *game, float delta_time, float visible_area_width, float v
 
             float tdir = (float) genRand(&game->rand) * 2 * PI;
 
-            for (unsigned int i = 0; i < wave_size; i++)
-            {
-                EntityTemplate_t *enemy;
+            for (unsigned int i = 0; i < wave_size; i++) {
+                EntityTemplate_t* enemy;
 
                 const int enemy_types = 2;
-                switch (genRandLong(&game->rand) % enemy_types)
-                {
+                switch (genRandLong(&game->rand) % enemy_types) {
                     case 1:
-                        if (wave_size >= 5)
-                        {
+                        if (wave_size >= 5) {
                             enemy = &et_enemy_small_bomber;
                             i += 2;
                             break;
@@ -146,8 +132,7 @@ void game_tick(Game_t *game, float delta_time, float visible_area_width, float v
     }
 }
 
-void game_destroy(Game_t *game)
-{
+void game_destroy(Game_t* game) {
     if (game == NULL)
         return;
 
