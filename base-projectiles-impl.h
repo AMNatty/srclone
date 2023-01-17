@@ -24,4 +24,4 @@ void pt_init(SDL_Renderer* renderer);
 void pt_free();
 
 
-#endif//SR_CLONE_BASE_PROJECTILES_IMPL_H
+#endif //SR_CLONE_BASE_PROJECTILES_IMPL_H

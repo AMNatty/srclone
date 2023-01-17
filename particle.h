@@ -61,4 +61,4 @@ void part_init(SDL_Renderer* renderer);
 void part_free();
 
 
-#endif//SR_CLONE_PARTICLE_H
+#endif //SR_CLONE_PARTICLE_H

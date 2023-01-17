@@ -28,4 +28,4 @@ void st_draw_stars(SDL_Renderer* renderer, float camX, float camY, float window_
 
 void st_free_star_textures();
 
-#endif//SR_CLONE_STARS_H
+#endif //SR_CLONE_STARS_H

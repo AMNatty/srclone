@@ -14,4 +14,4 @@
 #include <stdlib.h>
 #include <string.h>
 
-#endif//SR_CLONE_DEFS_H
+#endif //SR_CLONE_DEFS_H

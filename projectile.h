@@ -33,7 +33,7 @@ typedef void (*projectile_tick_function)(Player_t*, EntityManager_t*, Projectile
 typedef struct ProjectileTemplate {
     ProjectileType_t type;
     float initial_velocity;
-    float lifetime;// Lifetime in seconds
+    float lifetime; // Lifetime in seconds
     float cooldown;
     float damage;
     SDL_Texture* sprite;
@@ -67,4 +67,4 @@ bool projectile_create(ProjectileManager_t* projectile_manager, float x, float y
 bool projectile_destroy(ProjectileManager_t* projectile_manager, projectile_id id);
 
 
-#endif//SR_CLONE_PROJECTILE_H
+#endif //SR_CLONE_PROJECTILE_H

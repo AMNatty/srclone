@@ -69,4 +69,4 @@ bool en_destroy_entity(EntityManager_t* manager, entity_id id);
 
 void en_tick_do_nothing(Player_t* player, EntityManager_t* manager, Entity_t* entity, float delta_time);
 
-#endif//SR_CLONE_ENTITY_H
+#endif //SR_CLONE_ENTITY_H

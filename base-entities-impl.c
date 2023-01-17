@@ -230,7 +230,7 @@ static void en_tick_enemy_small_bomber(Player_t* player, EntityManager_t* manage
 
     struct EnemyData* enemy_data = (struct EnemyData*) en_get_data(entity);
 
-    float fire_angle = PI / 22.5;// 8°
+    float fire_angle = PI / 22.5; // 8°
     float rot = en_get_rotation(entity);
 
     float dx = player_get_x(player) - en_get_x(entity);

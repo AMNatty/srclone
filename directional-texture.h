@@ -18,4 +18,4 @@ typedef struct DirectionalTexture {
 DirectionalTexture_t* dt_create(SDL_Renderer* renderer, unsigned int directions, const char* location);
 void dt_free(DirectionalTexture_t* texture);
 
-#endif//SR_CLONE_DIRECTIONAL_TEXTURE_H
+#endif //SR_CLONE_DIRECTIONAL_TEXTURE_H

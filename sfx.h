@@ -26,4 +26,4 @@ void sfx_init();
 Mix_Chunk* sfx_get_variation(Mix_Chunk** sfx, unsigned int var_count, MTRand* rand);
 void sfx_free();
 
-#endif//SR_CLONE_SFX_H
+#endif //SR_CLONE_SFX_H

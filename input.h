@@ -34,4 +34,4 @@ void input_kb_event(SDL_Scancode scancode, KeyEventType_t event);
 void input_kb_reset();
 void input_kb_clear();
 
-#endif//SR_CLONE_INPUT_H
+#endif //SR_CLONE_INPUT_H

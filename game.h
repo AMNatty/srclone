@@ -22,4 +22,4 @@ MTRand* game_get_random(Game_t* game);
 void game_tick(Game_t* game, float delta_time, float visible_area_width, float visible_area_height);
 void game_destroy(Game_t* game);
 
-#endif//SR_CLONE_GAME_H
+#endif //SR_CLONE_GAME_H

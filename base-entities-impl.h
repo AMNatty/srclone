@@ -16,4 +16,4 @@ extern EntityTemplate_t et_enemy_small_bomber;
 void et_init(SDL_Renderer* renderer);
 void et_free();
 
-#endif//SR_CLONE_BASE_ENTITIES_IMPL_H
+#endif //SR_CLONE_BASE_ENTITIES_IMPL_H

@@ -43,4 +43,4 @@ void player_free(Player_t* player);
 void plr_init(SDL_Renderer* renderer);
 void plr_free();
 
-#endif//SR_CLONE_PLAYER_H
+#endif //SR_CLONE_PLAYER_H
