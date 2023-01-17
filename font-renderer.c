@@ -34,14 +34,16 @@ void fr_draw(SDL_Renderer* renderer, FontRenderer_t* font_renderer, float x, flo
     const int c_size = 8;
 
     SDL_Rect src_rect = {
-            .w = c_size,
-            .h = c_size};
+        .w = c_size,
+        .h = c_size,
+    };
 
     SDL_FRect dst_rect = {
-            x,
-            y,
-            size,
-            size};
+        x,
+        y,
+        size,
+        size,
+    };
 
     for (; *text != '\0'; text++) {
         char c = *text;

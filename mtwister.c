@@ -1,4 +1,5 @@
-/* An implementation of the MT19937 Algorithm for the Mersenne Twister
+/**
+ * An implementation of the MT19937 Algorithm for the Mersenne Twister
  * by Evan Sultanik.  Based upon the pseudocode in: M. Matsumoto and
  * T. Nishimura, "Mersenne Twister: A 623-dimensionally
  * equidistributed uniform pseudorandom number generator," ACM
@@ -17,9 +18,9 @@
 
 static inline void m_seedRand(MTRand* rand, unsigned long seed) {
     /* set initial seeds to mt[STATE_VECTOR_LENGTH] using the generator
-   * from Line 25 of Table 1 in: Donald Knuth, "The Art of Computer
-   * Programming," Vol. 2 (2nd Ed.) pp.102.
-   */
+     * from Line 25 of Table 1 in: Donald Knuth, "The Art of Computer
+     * Programming," Vol. 2 (2nd Ed.) pp.102.
+     */
     rand->mt[0] = seed & 0xffffffff;
     for (rand->index = 1; rand->index < STATE_VECTOR_LENGTH; rand->index++) {
         rand->mt[rand->index] = (6069 * rand->mt[rand->index - 1]) & 0xffffffff;
@@ -27,8 +28,8 @@ static inline void m_seedRand(MTRand* rand, unsigned long seed) {
 }
 
 /**
-* Creates a new random number generator from a given seed.
-*/
+ * Creates a new random number generator from a given seed.
+ */
 MTRand seedRand(unsigned long seed) {
     MTRand rand;
     m_seedRand(&rand, seed);

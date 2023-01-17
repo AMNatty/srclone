@@ -98,7 +98,7 @@ int main() {
         /**
          * Entity and player ticks
          * */
-        game_tick(game, timeDelta, window_width / 2, window_height / 2);
+        game_tick(game, timeDelta, (float) window_width / 2.0f, (float) window_height / 2.0f);
 
         /**
          * Do some rendering here
@@ -121,7 +121,12 @@ int main() {
 
             float w = 512;
             float h = 256;
-            SDL_FRect ui_game_over_location = {(float) window_width / 2 - w / 2, (float) window_height / 2 - h / 2, w, (float) h};
+            SDL_FRect ui_game_over_location = {
+                .x = (float) window_width / 2 - w / 2,
+                .y = (float) window_height / 2 - h / 2,
+                .w = w,
+                .h = (float) h,
+            };
             SDL_RenderCopyF(renderer, ui_you_died, NULL, &ui_game_over_location);
 
             if (GameInput.reset) {
